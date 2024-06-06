@@ -1,11 +1,12 @@
 import tkinter as tk  
 
+print("BASDAI is launching...")
 # make the tkinter window
 root = tk.Tk()
 root.title("BASDAI")
 
 # make a padding string so things look a bit less jank
-pad = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
+pad = tk.Label(root, text="♤----------------------------------------------------------------------------------------------------------------------------------------------------♡")
 pad.pack(pady=10)
 
 #make the main label
@@ -18,16 +19,16 @@ buttons = []
 #question counter 
 question = 1
 
-#clean up the 10 buttons once they are done with
+# clean up the 10 buttons once they are done with
 def cleanupButtons():
     for button in buttons:
         button.pack_forget()
 
-#get the basdai score
+# get the basdai score
 def calculateScore(q1,q2,q3,q4,q5,q6):
     return ((q1 + q2 + q3 + q4) + ((q5 + q6) / 2)) / 5   
 
-#add score for each question and move to next question
+# add score for each question and move to next question
 def enterScore(number): 
     global question, score1, score2, score3, score4, score5, score6    
     if question == 1:
@@ -48,8 +49,7 @@ def enterScore(number):
     elif question == 6:
         score6 = number
         cleanupButtons()
-        finalScore = calculateScore(score1, score2, score3, score4, score5, score6) 
-        setLabel(f"Your BASDAI Score: {finalScore}")
+        setLabel(f"Your BASDAI Score: {calculateScore(score1, score2, score3, score4, score5, score6)}")
     question += 1
 
 # update the main label
@@ -57,12 +57,12 @@ def setLabel(labelText):
     label.config(text=labelText)
 
 #  remove start button and create the 10 score buttons, update label to first question
-def start_button_click():
+def startButtonClick():
     # update the tabel for the first question
     label.config(text="1. How would you describe the overall level of fatigue/tiredness you have experienced?")
     
     # cleanup start button
-    start_button.pack_forget()
+    startButton.pack_forget()
     
     
     # make and pack 10 buttons
@@ -70,18 +70,20 @@ def start_button_click():
         btn = tk.Button(root, text=str(i), command=lambda i=i: enterScore(i)) # this lambda function captures i at the moment the button is...
         btn.pack(padx=5)                                                      #...created, rather than at the end. 
         buttons.append(btn) #store these in a list so can be cleared up later. 
-   
-    # add an extra pad
-    lowpad = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
-    lowpad.pack(pady=10)
+    adjustBottomPad()
+
+# repacks the bottom pad - needed to ensure it remains at the bottom   
+def adjustBottomPad():
+    lowPad.pack_forget()
+    lowPad.pack(pady=10)
 
 # create start button
-start_button = tk.Button(root, text="Start the questionnaire", command=start_button_click)
-start_button.pack(pady=10)
+startButton = tk.Button(root, text="Start the questionnaire", command=startButtonClick)
+startButton.pack(pady=10)
 
-# make a padding string for the bottom
-lowpadStart = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
-lowpadStart.pack(pady=10)
+# create the bottom pad
+lowPad = tk.Label(root, text="♢------------------------------------------------------------------------------------------------------------------------------------------------------♧")
+lowPad.pack()
 
 # run tkinters loop
 root.mainloop()
