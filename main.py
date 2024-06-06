@@ -1,9 +1,10 @@
-import tkinter as tk  # Importing the Tkinter module with an alias
+import tkinter as tk  
 
-# Create the main window
+# make the tkinter window
 root = tk.Tk()
 root.title("BASDAI")
-# make a pad
+
+# make a padding string so things look a bit less jank
 pad = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
 pad.pack(pady=10)
 
@@ -17,16 +18,16 @@ buttons = []
 #question counter 
 question = 1
 
-
-
+#clean up the 10 buttons once they are done with
 def cleanupButtons():
     for button in buttons:
         button.pack_forget()
 
+#get the basdai score
 def calculateScore(q1,q2,q3,q4,q5,q6):
     return ((q1 + q2 + q3 + q4) + ((q5 + q6) / 2)) / 5   
 
-#add score selected and move to next question
+#add score for each question and move to next question
 def enterScore(number): 
     global question, score1, score2, score3, score4, score5, score6    
     if question == 1:
@@ -51,35 +52,36 @@ def enterScore(number):
         setLabel(f"Your BASDAI Score: {finalScore}")
     question += 1
 
-
+# update the main label
 def setLabel(labelText):
     label.config(text=labelText)
 
-#  start button click
+#  remove start button and create the 10 score buttons, update label to first question
 def start_button_click():
-    # Update label first time:
+    # update the tabel for the first question
     label.config(text="1. How would you describe the overall level of fatigue/tiredness you have experienced?")
     
     # cleanup start button
     start_button.pack_forget()
     
     
-    # Add the new buttons
+    # make and pack 10 buttons
     for i in range(11):
-        btn = tk.Button(root, text=str(i), command=lambda i=i: enterScore(i))
-        btn.pack(padx=5)
+        btn = tk.Button(root, text=str(i), command=lambda i=i: enterScore(i)) # this lambda function captures i at the moment the button is...
+        btn.pack(padx=5)                                                      #...created, rather than at the end. 
         buttons.append(btn) #store these in a list so can be cleared up later. 
+   
+    # add an extra pad
     lowpad = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
     lowpad.pack(pady=10)
 
-
-# Create the start button
+# create start button
 start_button = tk.Button(root, text="Start the questionnaire", command=start_button_click)
 start_button.pack(pady=10)
 
+# make a padding string for the bottom
 lowpadStart = tk.Label(root, text="--------------------------------------------------------------------------------------------------------------------------------------------------------")
 lowpadStart.pack(pady=10)
 
-
-# Run the main event loop
+# run tkinters loop
 root.mainloop()
